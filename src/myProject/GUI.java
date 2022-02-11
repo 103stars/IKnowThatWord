@@ -55,15 +55,6 @@ public class GUI extends JFrame {
 
         escucha = new Escucha();
 
-/*
-        headerProject = new Header("yop ", Color.BLACK);
-        constraints.gridx=0;
-        constraints.gridy=0;
-        constraints.gridwidth=2;
-        constraints.fill=GridBagConstraints.HORIZONTAL;
-        this.add(headerProject, constraints);
-
- */
 
         sesion = new JLabel("Ingresa tu nombre");
         sesion.setFont(new Font("Regular", Font.PLAIN, 25));
@@ -121,7 +112,9 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource()==instrucciones){
-                JOptionPane.showMessageDialog(null, "");
+                JOptionPane.showMessageDialog(null, "En este juego tendrás que recordar las palabras que se mostrarán al comienzo y luego decidir si" + "\n"+
+                        "pertenecen al conjunto de palabras que se mostrarán después, el truco está en que tambien van " + "\n"+"a aparecer palabras que no están incluidas, basado en tu memoria decidirás si estas palabras" + "\n"+
+                        "están incluidas en el conjunto inicial, entre mas alto sea el nivel más tendrás que memorizar y" + "\n"+"más palabras erroneas se mostrarán");
             }else{
                 usuario.getText();
                 jugar.setVisible(false);
