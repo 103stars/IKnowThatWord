@@ -52,6 +52,9 @@ public class GUI extends JFrame {
         //Set up JComponents
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
+
+        escucha = new Escucha();
+
 /*
         headerProject = new Header("yop ", Color.BLACK);
         constraints.gridx=0;
@@ -80,12 +83,15 @@ public class GUI extends JFrame {
         add(usuario,constraints);
 
         jugar = new JButton("Empezar");
+        jugar.addActionListener(escucha);
+
         constraints.gridx=0;
         constraints.gridy=2;
         constraints.insets = new Insets(0,0,0,135);
         add(jugar,constraints);
 
         instrucciones = new JButton("Como Jugar");
+        instrucciones.addActionListener(escucha);
         constraints.gridx=0;
         constraints.gridy=2;
         constraints.insets = new Insets(30,115,30,0);
@@ -110,7 +116,19 @@ public class GUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha {
+    private class Escucha implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==instrucciones){
+                JOptionPane.showMessageDialog(null, "");
+            }else{
+                usuario.getText();
+                jugar.setVisible(false);
+                instrucciones.setVisible(false);
+                sesion.setVisible(false);
+                usuario.setVisible(false);
+            }
+        }
     }
 }
