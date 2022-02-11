@@ -112,13 +112,7 @@ public class GUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha implements ActionListener {
+    private class Escucha {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource()==instrucciones){
-                JOptionPane.showMessageDialog(null, "En cada nivel se");
-            }
-        }
     }
 }
