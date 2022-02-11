@@ -89,7 +89,6 @@ public class GUI extends JFrame {
         add(instrucciones,constraints);
 
 
-
     }
 
     /**
