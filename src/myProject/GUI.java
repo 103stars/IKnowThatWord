@@ -29,7 +29,6 @@ public class GUI extends JFrame {
      */
     public GUI(){
         initGUI();
-
         //Default JFrame configuration
         this.setTitle("I KNOW THAT WORD");
         this.setSize(720,450);
