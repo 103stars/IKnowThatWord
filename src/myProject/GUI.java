@@ -2,6 +2,8 @@ package myProject;
 
 
 import java.io.Console;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +27,8 @@ public class GUI extends JFrame {
     private String usuarioTexto;
     private Escucha escucha;
     private ArrayList<String> palabrasOK, palabrasNotOK;
+    private FileManager fileManager;
+
 
     /**
      * Constructor of GUI class
@@ -35,7 +39,7 @@ public class GUI extends JFrame {
         this.setTitle("I KNOW THAT WORD");
         this.setSize(720,450);
         //this.pack();
-        this.setResizable(true);
+        this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,15 +53,16 @@ public class GUI extends JFrame {
         //Set up JFrame Container's Layout
         //Create Listener Object and Control Object
         //Set up JComponents
-        escucha = new Escucha();
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
-
         escucha = new Escucha();
+        fileManager = new FileManager();
+
 
 
         sesion = new JLabel("Ingresa tu nombre");
         sesion.setFont(new Font("Regular", Font.PLAIN, 25));
+
         constraints.gridx=0;
         constraints.gridy=1;
         constraints.anchor=GridBagConstraints.PAGE_START;
@@ -68,6 +73,8 @@ public class GUI extends JFrame {
 
         usuario = new JTextField();
         usuario.setPreferredSize(new Dimension(220, 30));
+
+
         constraints.gridy=1;
         constraints.anchor=GridBagConstraints.CENTER;
         constraints.insets = new Insets(100,0,0,0);
@@ -75,10 +82,6 @@ public class GUI extends JFrame {
 
         jugar = new JButton("Empezar");
         jugar.addActionListener(escucha);
-<<<<<<< HEAD
-=======
-
->>>>>>> 677aa60419210458c98409919105c6b9bb7bf146
         constraints.gridx=0;
         constraints.gridy=2;
         constraints.insets = new Insets(0,0,0,135);
@@ -140,11 +143,14 @@ public class GUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
             if(e.getSource()==instrucciones){
                 JOptionPane.showMessageDialog(null, "En cada nivel al comienzo se mostrarán una serie de palabras, tendrás que memorizarlas y decir");
             }else{
-                usuario.getText();
+
+                //Guarda los datos en un archivo de texto
+                fileManager.escribirTexto(usuario.getText());
+                usuario.setText("");
+
                 usuario.setVisible(false);
                 jugar.setVisible(false);
                 sesion.setVisible(false);
@@ -156,19 +162,6 @@ public class GUI extends JFrame {
                 areaPuntaje.setVisible(true);
 
 
-=======
-            if (e.getSource()==instrucciones){
-                JOptionPane.showMessageDialog(null, "En este juego tendrás que recordar las palabras que se mostrarán al comienzo y luego decidir si" + "\n"+
-                        "pertenecen al conjunto de palabras que se mostrarán después, el truco está en que tambien van " + "\n"+"a aparecer palabras que no están incluidas, basado en tu memoria decidirás si estas palabras" + "\n"+
-                        "están incluidas en el conjunto inicial, entre mas alto sea el nivel más tendrás que memorizar y" + "\n"+"más palabras erroneas se mostrarán");
-            }else{
-                usuario.getText();
-                jugar.setVisible(false);
-                instrucciones.setVisible(false);
-                sesion.setVisible(false);
-                usuario.setVisible(false);
->>>>>>> 677aa60419210458c98409919105c6b9bb7bf146
-            }
         }
-    }
+    }}
 }

@@ -1,31 +1,31 @@
 package myProject;
 
-
 import java.io.*;
 
 public class FileManager {
-    public static final String PATH = "src/myProject/diccionario/wordsOk.txt";
     private FileReader fileReader;
     private BufferedReader input;
     private FileWriter fileWriter;
     private BufferedWriter output;
 
-    public String lecturaFile(){
-        String texto = "";
+
+    public String lecturaFile() {
+        String texto="";
+
         try {
-            fileReader = new FileReader(PATH);
+            fileReader = new FileReader("src/myProject/files/fileText.txt");
             input = new BufferedReader(fileReader);
             String line = input.readLine();
-            while(line != null){
+            while(line!=null){
                 texto+=line;
                 texto+="\n";
-                line = input.readLine();
+                line=input.readLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        }finally{
             try {
                 input.close();
             } catch (IOException e) {
@@ -35,15 +35,15 @@ public class FileManager {
         return texto;
     }
 
-    public void escribirFile(String line){
+    public void escribirTexto(String linea){
         try {
-            fileWriter = new FileWriter(PATH,true);
+            fileWriter = new FileWriter("src/myProject/diccionario/user.txt",true);
             output = new BufferedWriter(fileWriter);
-            output.write(line);
+            output.write(linea);
             output.newLine();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        }finally{
             try {
                 output.close();
             } catch (IOException e) {
@@ -51,7 +51,5 @@ public class FileManager {
             }
         }
     }
+
 }
-
-
-
