@@ -1,0 +1,3 @@
+goku,1
+pepe,1
+lsdl,1

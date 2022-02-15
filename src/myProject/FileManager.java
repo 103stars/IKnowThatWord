@@ -1,6 +1,8 @@
 package myProject;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileManager {
     private FileReader fileReader;
@@ -35,12 +37,41 @@ public class FileManager {
         return texto;
     }
 
-    public void escribirTexto(String linea){
+    public void escribirTexto(String linea, int nivel){
         try {
-            fileWriter = new FileWriter("src/myProject/diccionario/user.txt",true);
+            Path p = Paths.get("src/myProject/diccionario/user.txt");
+            File init = new File(p.toUri());
+            File tmp = new File(init.getAbsolutePath() + ".tmp");
+
+            fileReader = new FileReader(init);
+            fileWriter = new FileWriter(tmp);
             output = new BufferedWriter(fileWriter);
-            output.write(linea);
-            output.newLine();
+            input  = new BufferedReader(fileReader);
+
+            String txt = null;
+
+            boolean isProcesado = false;
+            while((txt = input.readLine()) != null){
+                if(!txt.split(",")[0].equals(linea)){
+                    output.write(txt);
+                    output.newLine();
+                } else {
+                    output.write(linea + "," + nivel);
+                    output.newLine();
+                    isProcesado = true;
+                }
+            }
+            input.close();
+            if(!isProcesado){
+                output.write(linea + "," + nivel);
+                output.newLine();
+            }
+            output.close();
+            if(init.delete()){
+                System.out.println("se borra");
+            }
+            tmp.renameTo(init);
+
         } catch (IOException e) {
             e.printStackTrace();
         }finally{

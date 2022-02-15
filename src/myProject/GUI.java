@@ -1,9 +1,6 @@
 package myProject;
 
 
-import java.io.Console;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
@@ -23,11 +20,12 @@ public class GUI extends JFrame {
     private JTextArea areaPuntaje;
     private JLabel sesion;
     private JButton si, no, instrucciones, jugar;
-    private JTextField usuario;
+    private JTextField nombredeUsuario;
     private String usuarioTexto;
     private Escucha escucha;
     private ArrayList<String> palabrasOK, palabrasNotOK;
     private FileManager fileManager;
+    public static String usuariohola;
 
 
     /**
@@ -60,6 +58,7 @@ public class GUI extends JFrame {
 
 
 
+
         sesion = new JLabel("Ingresa tu nombre");
         sesion.setFont(new Font("Regular", Font.PLAIN, 25));
 
@@ -71,14 +70,14 @@ public class GUI extends JFrame {
 
 
 
-        usuario = new JTextField();
-        usuario.setPreferredSize(new Dimension(220, 30));
+        nombredeUsuario = new JTextField();
+        nombredeUsuario.setPreferredSize(new Dimension(220, 30));
 
 
         constraints.gridy=1;
         constraints.anchor=GridBagConstraints.CENTER;
         constraints.insets = new Insets(100,0,0,0);
-        add(usuario,constraints);
+        add(nombredeUsuario,constraints);
 
         jugar = new JButton("Empezar");
         jugar.addActionListener(escucha);
@@ -122,6 +121,7 @@ public class GUI extends JFrame {
         areaPuntaje.setEditable(false);
         areaPuntaje.setVisible(false);
 
+        usuariohola = (nombredeUsuario.getText());
 
     }
 
@@ -145,13 +145,12 @@ public class GUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource()==instrucciones){
                 JOptionPane.showMessageDialog(null, "En cada nivel al comienzo se mostrarán una serie de palabras, tendrás que memorizarlas y decir");
-            }else{
-
+            }else {
                 //Guarda los datos en un archivo de texto
-                fileManager.escribirTexto(usuario.getText());
-                usuario.setText("");
+                fileManager.escribirTexto(nombredeUsuario.getText(),1);
+                nombredeUsuario.setText("");
 
-                usuario.setVisible(false);
+                nombredeUsuario.setVisible(false);
                 jugar.setVisible(false);
                 sesion.setVisible(false);
 
@@ -160,8 +159,6 @@ public class GUI extends JFrame {
                 si.setVisible(true);
                 no.setVisible(true);
                 areaPuntaje.setVisible(true);
-
-
         }
     }}
 }
