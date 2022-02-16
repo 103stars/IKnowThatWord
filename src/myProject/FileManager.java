@@ -1,8 +1,11 @@
 package myProject;
 
+import javax.swing.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileManager {
     private FileReader fileReader;
@@ -11,17 +14,23 @@ public class FileManager {
     private BufferedWriter output;
 
 
-    public String lecturaFile() {
-        String texto="";
+    public List<String> lecturaFile(String rutaArchivo, int nivel) {
+
+        List<String> palabras = new ArrayList<>();
+        int cantidadPalabras = nivel * 10;
+        String texto = "";
 
         try {
-            fileReader = new FileReader("src/myProject/files/fileText.txt");
+            fileReader = new FileReader(rutaArchivo);
             input = new BufferedReader(fileReader);
-            String line = input.readLine();
-            while(line!=null){
-                texto+=line;
-                texto+="\n";
-                line=input.readLine();
+            String line = null;
+            int contador = 0;
+            while((line = input.readLine())!= null){
+                palabras.add(line);
+                contador++;
+                if(contador >= cantidadPalabras){
+                    break;
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -34,10 +43,10 @@ public class FileManager {
                 e.printStackTrace();
             }
         }
-        return texto;
+        return palabras;
     }
 
-    public void escribirTexto(String linea, int nivel){
+    public void actualizarUsuario(String linea, int nivel){
         try {
             Path p = Paths.get("src/myProject/diccionario/user.txt");
             File init = new File(p.toUri());
@@ -59,6 +68,9 @@ public class FileManager {
                     output.write(linea + "," + nivel);
                     output.newLine();
                     isProcesado = true;
+                    JOptionPane.showMessageDialog(null,"Bienvenido de vuelta "+ linea +"!" + "\n"+
+                            "Vas en el nivel "+nivel);
+
                 }
             }
             input.close();
@@ -68,6 +80,7 @@ public class FileManager {
             }
             output.close();
             if(init.delete()){
+
                 System.out.println("se borra");
             }
             tmp.renameTo(init);
@@ -81,6 +94,32 @@ public class FileManager {
                 e.printStackTrace();
             }
         }
+    }
+
+    public String retornaUsuario(String usuario){
+        String texto = null;
+        try {
+            Path p = Paths.get("src/myProject/diccionario/user.txt");
+            File init = new File(p.toUri());
+
+            fileReader = new FileReader(init);
+            input  = new BufferedReader(fileReader);
+
+            while ((texto = input.readLine()) != null){
+                if(texto.split(",")[0].equals(usuario)){
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                input.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return texto;
     }
 
 }

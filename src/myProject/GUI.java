@@ -19,7 +19,7 @@ public class GUI extends JFrame {
     private JPanel login, juego, panelLogin;
     private JTextArea areaPuntaje;
     private JLabel sesion;
-    private JButton si, no, instrucciones, jugar;
+    private JButton si, no, instrucciones, jugar, empezar;
     private JTextField nombredeUsuario;
     private String usuarioTexto;
     private Escucha escucha;
@@ -57,8 +57,6 @@ public class GUI extends JFrame {
         fileManager = new FileManager();
 
 
-
-
         sesion = new JLabel("Ingresa tu nombre");
         sesion.setFont(new Font("Regular", Font.PLAIN, 25));
 
@@ -87,6 +85,7 @@ public class GUI extends JFrame {
         add(jugar,constraints);
 
         instrucciones = new JButton("Como Jugar");
+        instrucciones.setVisible(false);
         instrucciones.addActionListener(escucha);
         constraints.gridx=0;
         constraints.gridy=2;
@@ -121,6 +120,17 @@ public class GUI extends JFrame {
         areaPuntaje.setEditable(false);
         areaPuntaje.setVisible(false);
 
+        empezar = new JButton("Iniciar");
+        empezar.setVisible(false);
+        empezar.addActionListener(escucha);
+        constraints.gridx=0;
+        constraints.gridy=0;
+        constraints.gridwidth=1;
+        constraints.insets = new Insets(0,0,0,0);
+        add(empezar,constraints);
+
+
+
         usuariohola = (nombredeUsuario.getText());
 
     }
@@ -139,26 +149,42 @@ public class GUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha implements ActionListener {
+    private class Escucha implements ActionListener{
+        private ControlWord controlWord;
+        //private String usuarioString;
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             if(e.getSource()==instrucciones){
                 JOptionPane.showMessageDialog(null, "En cada nivel al comienzo se mostrarán una serie de palabras, tendrás que memorizarlas y decir");
-            }else {
+
+            }else if (e.getSource()==jugar){
                 //Guarda los datos en un archivo de texto
-                fileManager.escribirTexto(nombredeUsuario.getText(),1);
-                nombredeUsuario.setText("");
+
+
+                fileManager.actualizarUsuario(nombredeUsuario.getText(),1);
+                //ombredeUsuario.setText("");
+
+
+                empezar.setVisible(true);
 
                 nombredeUsuario.setVisible(false);
                 jugar.setVisible(false);
                 sesion.setVisible(false);
 
-                instrucciones.setVisible(false);
 
+
+            }if (e.getSource()==empezar){
+
+                controlWord = new ControlWord(nombredeUsuario.getText());
+                empezar.setVisible(false);
                 si.setVisible(true);
                 no.setVisible(true);
                 areaPuntaje.setVisible(true);
+                instrucciones.setVisible(true);
+
+            }
         }
-    }}
+    }
 }
