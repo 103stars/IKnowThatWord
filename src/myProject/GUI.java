@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.stream.Stream;
 
 
 /**
@@ -14,19 +15,15 @@ import java.awt.event.ActionListener;
  * @version v.1.0.0 date:21/11/2021
  */
 public class GUI extends JFrame {
-
-    private Header headerProject;
-    private JPanel login, juego, panelLogin;
+    ;
     private JTextArea areaPuntaje;
-    private JLabel sesion;
+    private JLabel sesion, palabras;
     private JButton si, no, instrucciones, jugar, empezar;
     private JTextField nombredeUsuario;
-    private String usuarioTexto;
     private Escucha escucha;
-    private ArrayList<String> palabrasOK, palabrasNotOK;
     private FileManager fileManager;
     public static String usuariohola;
-
+    private Timer timerRecordar, timerAdivinar;
 
     /**
      * Constructor of GUI class
@@ -35,7 +32,7 @@ public class GUI extends JFrame {
         initGUI();
         //Default JFrame configuration
         this.setTitle("I KNOW THAT WORD");
-        this.setSize(720,450);
+        this.setSize(720,600);
         //this.pack();
         this.setResizable(false);
         this.setVisible(true);
@@ -70,8 +67,6 @@ public class GUI extends JFrame {
 
         nombredeUsuario = new JTextField();
         nombredeUsuario.setPreferredSize(new Dimension(220, 30));
-
-
         constraints.gridy=1;
         constraints.anchor=GridBagConstraints.CENTER;
         constraints.insets = new Insets(100,0,0,0);
@@ -81,7 +76,7 @@ public class GUI extends JFrame {
         jugar.addActionListener(escucha);
         constraints.gridx=0;
         constraints.gridy=2;
-        constraints.insets = new Insets(0,0,0,135);
+        constraints.insets = new Insets(0,0,0,0);
         add(jugar,constraints);
 
         instrucciones = new JButton("Como Jugar");
@@ -89,17 +84,19 @@ public class GUI extends JFrame {
         instrucciones.addActionListener(escucha);
         constraints.gridx=0;
         constraints.gridy=2;
-        constraints.insets = new Insets(30,115,30,0);
+        constraints.insets = new Insets(30,0,30,0);
         add(instrucciones,constraints);
 
         si = new JButton("      Si      ");
         si.addActionListener(escucha);
+        si.setVisible(false);
         constraints.gridx=0;
         constraints.gridy=2;
         constraints.insets = new Insets(150,0,0,135);
         add(si,constraints);
 
         no = new JButton("      No      ");
+        no.setVisible(false);
         no.addActionListener(escucha);
         constraints.gridx=0;
         constraints.gridy=2;
@@ -129,9 +126,15 @@ public class GUI extends JFrame {
         constraints.insets = new Insets(0,0,0,0);
         add(empezar,constraints);
 
-
-
         usuariohola = (nombredeUsuario.getText());
+        palabras = new JLabel("Memoriza las siguientes palabras");
+        palabras.setFont(new Font("Regular", Font.PLAIN, 35));
+        palabras.setVisible(false);
+        //constraints.insets = new Insets(280,0,0,0);
+        add(palabras,constraints);
+
+        timerAdivinar = new Timer(5000,escucha);
+        timerRecordar = new Timer(1000,escucha);
 
     }
 
@@ -151,6 +154,7 @@ public class GUI extends JFrame {
      */
     private class Escucha implements ActionListener{
         private ControlWord controlWord;
+        private int counter;
         //private String usuarioString;
 
         @Override
@@ -164,11 +168,11 @@ public class GUI extends JFrame {
 
 
                 fileManager.actualizarUsuario(nombredeUsuario.getText(),1);
-                //ombredeUsuario.setText("");
+                //nombredeUsuario.setText("");
 
 
                 empezar.setVisible(true);
-
+                instrucciones.setVisible(true);
                 nombredeUsuario.setVisible(false);
                 jugar.setVisible(false);
                 sesion.setVisible(false);
@@ -177,12 +181,40 @@ public class GUI extends JFrame {
 
             }if (e.getSource()==empezar){
 
+                timerRecordar.start();
                 controlWord = new ControlWord(nombredeUsuario.getText());
                 empezar.setVisible(false);
-                si.setVisible(true);
-                no.setVisible(true);
+                si.setVisible(false);
+                no.setVisible(false);
                 areaPuntaje.setVisible(true);
-                instrucciones.setVisible(true);
+                instrucciones.setVisible(false);
+                palabras.setVisible(true);
+
+                System.out.println("Correctas " + controlWord.getPalabrasCorrectas());
+                System.out.println("------------------------------------------");
+                System.out.println("Incorrectas " + controlWord.getPalabrasIncorrectas());
+                System.out.println("------------------------------------------");
+                System.out.println(controlWord.mixPalabras());
+
+
+            }if (e.getSource()==timerRecordar){
+                if(counter<controlWord.getPalabrasCorrectas().size()){
+                    palabras.setText(controlWord.getPalabrasCorrectas().get(counter));
+                    counter++;
+
+                }else{
+                    timerRecordar.stop();
+                    counter = 0;
+                    si.setVisible(true);
+                    no.setVisible(true);
+                    si.setEnabled(false);
+                    no.setEnabled(false);
+                }
+
+            }
+
+            if (e.getSource()==timerAdivinar){
+
 
             }
         }

@@ -64,20 +64,23 @@ public class FileManager {
                 if(!txt.split(",")[0].equals(linea)){
                     output.write(txt);
                     output.newLine();
-                } else {
-                    output.write(linea + "," + nivel);
+                } else if(!isProcesado){
+                    output.write(txt);
                     output.newLine();
+
                     isProcesado = true;
                     JOptionPane.showMessageDialog(null,"Bienvenido de vuelta "+ linea +"!" + "\n"+
-                            "Vas en el nivel "+nivel);
+                            "Vas en el nivel "+txt.split(",")[1]);
 
                 }
+
             }
             input.close();
             if(!isProcesado){
                 output.write(linea + "," + nivel);
                 output.newLine();
             }
+
             output.close();
             if(init.delete()){
 
