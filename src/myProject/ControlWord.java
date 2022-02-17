@@ -1,6 +1,8 @@
 package myProject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -10,7 +12,6 @@ public class ControlWord {
     private int nivel;
     private FileManager fileManager;
     private List<String> palabrasCorrectas, palabrasIncorrectas;
-    //private List<List> mixPalabras;
 
     public ControlWord () {
 
@@ -37,6 +38,7 @@ public class ControlWord {
         List<String> listaCombinada = new ArrayList<>();
         listaCombinada.addAll(palabrasCorrectas);
         listaCombinada.addAll(palabrasIncorrectas);
+        Collections.shuffle(listaCombinada);
         return  listaCombinada;
     }
 

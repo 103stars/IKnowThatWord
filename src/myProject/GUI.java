@@ -23,7 +23,7 @@ public class GUI extends JFrame {
     private Escucha escucha;
     private FileManager fileManager;
     public static String usuariohola;
-    private Timer timerRecordar, timerAdivinar;
+    private Timer timerRecordar, timerAdivinar, timer1, timer2, timer3;
 
     /**
      * Constructor of GUI class
@@ -69,7 +69,7 @@ public class GUI extends JFrame {
         nombredeUsuario.setPreferredSize(new Dimension(220, 30));
         constraints.gridy=1;
         constraints.anchor=GridBagConstraints.CENTER;
-        constraints.insets = new Insets(100,0,0,0);
+        constraints.insets = new Insets(80,0,40,0);
         add(nombredeUsuario,constraints);
 
         jugar = new JButton("Empezar");
@@ -127,14 +127,18 @@ public class GUI extends JFrame {
         add(empezar,constraints);
 
         usuariohola = (nombredeUsuario.getText());
-        palabras = new JLabel("Memoriza las siguientes palabras");
+        palabras = new JLabel("Memoriza las siguientes palabras:");
         palabras.setFont(new Font("Regular", Font.PLAIN, 35));
         palabras.setVisible(false);
         //constraints.insets = new Insets(280,0,0,0);
         add(palabras,constraints);
 
-        timerAdivinar = new Timer(5000,escucha);
-        timerRecordar = new Timer(1000,escucha);
+
+
+        timer1 = new Timer(300,escucha);
+        timer2 = new Timer(300,escucha);
+        timerAdivinar = new Timer(500,escucha);
+        timerRecordar = new Timer(100,escucha);
 
     }
 
@@ -181,7 +185,7 @@ public class GUI extends JFrame {
 
             }if (e.getSource()==empezar){
 
-                timerRecordar.start();
+                timer1.start();
                 controlWord = new ControlWord(nombredeUsuario.getText());
                 empezar.setVisible(false);
                 si.setVisible(false);
@@ -194,9 +198,12 @@ public class GUI extends JFrame {
                 System.out.println("------------------------------------------");
                 System.out.println("Incorrectas " + controlWord.getPalabrasIncorrectas());
                 System.out.println("------------------------------------------");
-                System.out.println(controlWord.mixPalabras());
+                System.out.println("Combinada "+controlWord.mixPalabras());
 
 
+            }if(e.getSource()==timer1){
+                timer1.stop();
+                timerRecordar.start();
             }if (e.getSource()==timerRecordar){
                 if(counter<controlWord.getPalabrasCorrectas().size()){
                     palabras.setText(controlWord.getPalabrasCorrectas().get(counter));
@@ -205,17 +212,28 @@ public class GUI extends JFrame {
                 }else{
                     timerRecordar.stop();
                     counter = 0;
+                    palabras.setText("yop");
                     si.setVisible(true);
                     no.setVisible(true);
                     si.setEnabled(false);
                     no.setEnabled(false);
+                    System.out.println("recordar termina");
+                    timer2.start();
                 }
 
+            }if (e.getSource()==timer2){
+                palabras.setText("Preparate");
+                timer2.stop();
+                timerAdivinar.start();
             }
 
             if (e.getSource()==timerAdivinar){
-
-
+                si.setEnabled(true);
+                no.setEnabled(true);
+                if(counter<controlWord.mixPalabras().size()){
+                    palabras.setText(controlWord.mixPalabras().get(counter));
+                    counter++;
+                }
             }
         }
     }
