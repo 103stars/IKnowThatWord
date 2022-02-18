@@ -1,9 +1,7 @@
 package myProject;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class ControlWord {
@@ -11,7 +9,7 @@ public class ControlWord {
     private String user;
     private int nivel;
     private FileManager fileManager;
-    private List<String> palabrasCorrectas, palabrasIncorrectas;
+    private List<String> palabrasCorrectas, palabrasIncorrectas, listaCombinada;
 
     public ControlWord () {
 
@@ -30,17 +28,25 @@ public class ControlWord {
         this.nivel = Integer.parseInt(nivelUsuario);
         this.palabrasCorrectas = fileManager.lecturaFile("src/myProject/diccionario/wordsOk.txt",nivel);
         this.palabrasIncorrectas = fileManager.lecturaFile("src/myProject/diccionario/wordsNok.txt",nivel);
+        listaCombinada = new ArrayList<>();
+        listaCombinada.addAll(palabrasCorrectas);
+        listaCombinada.addAll(palabrasIncorrectas);
+        Collections.shuffle(listaCombinada);
 
 
     }
 
+    /*
     public List<String> mixPalabras(){
+
         List<String> listaCombinada = new ArrayList<>();
         listaCombinada.addAll(palabrasCorrectas);
         listaCombinada.addAll(palabrasIncorrectas);
         Collections.shuffle(listaCombinada);
         return  listaCombinada;
     }
+
+     */
 
     public String getUser() {
         return user;
@@ -80,5 +86,13 @@ public class ControlWord {
 
     public void setPalabrasIncorrectas(List<String> palabrasIncorrectas) {
         this.palabrasIncorrectas = palabrasIncorrectas;
+    }
+
+    public List<String> getListaCombinada() {
+        return listaCombinada;
+    }
+
+    public void setListaCombinada(List<String> listaCombinada) {
+        this.listaCombinada = listaCombinada;
     }
 }

@@ -1,13 +1,11 @@
 package myProject;
 
-
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.stream.Stream;
-
 
 /**
  * This class is used for ...
@@ -28,11 +26,11 @@ public class GUI extends JFrame {
     /**
      * Constructor of GUI class
      */
-    public GUI(){
+    public GUI() {
         initGUI();
         //Default JFrame configuration
         this.setTitle("I KNOW THAT WORD");
-        this.setSize(720,600);
+        this.setSize(720, 600);
         //this.pack();
         this.setResizable(false);
         this.setVisible(true);
@@ -53,66 +51,63 @@ public class GUI extends JFrame {
         escucha = new Escucha();
         fileManager = new FileManager();
 
-
         sesion = new JLabel("Ingresa tu nombre");
         sesion.setFont(new Font("Regular", Font.PLAIN, 25));
 
-        constraints.gridx=0;
-        constraints.gridy=1;
-        constraints.anchor=GridBagConstraints.PAGE_START;
-        constraints.insets = new Insets(0,0,100,0);
-        add(sesion,constraints);
-
-
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.anchor = GridBagConstraints.PAGE_START;
+        constraints.insets = new Insets(0, 0, 100, 0);
+        add(sesion, constraints);
 
         nombredeUsuario = new JTextField();
         nombredeUsuario.setPreferredSize(new Dimension(220, 30));
-        constraints.gridy=1;
-        constraints.anchor=GridBagConstraints.CENTER;
-        constraints.insets = new Insets(80,0,40,0);
-        add(nombredeUsuario,constraints);
+        constraints.gridy = 1;
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.insets = new Insets(80, 0, 40, 0);
+        add(nombredeUsuario, constraints);
 
         jugar = new JButton("Empezar");
         jugar.addActionListener(escucha);
-        constraints.gridx=0;
-        constraints.gridy=2;
-        constraints.insets = new Insets(0,0,0,0);
-        add(jugar,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.insets = new Insets(0, 0, 0, 0);
+        add(jugar, constraints);
 
         instrucciones = new JButton("Como Jugar");
         instrucciones.setVisible(false);
         instrucciones.addActionListener(escucha);
-        constraints.gridx=0;
-        constraints.gridy=2;
-        constraints.insets = new Insets(30,0,30,0);
-        add(instrucciones,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.insets = new Insets(30, 0, 30, 0);
+        add(instrucciones, constraints);
 
         si = new JButton("      Si      ");
         si.addActionListener(escucha);
         si.setVisible(false);
-        constraints.gridx=0;
-        constraints.gridy=2;
-        constraints.insets = new Insets(150,0,0,135);
-        add(si,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.insets = new Insets(150, 0, 0, 135);
+        add(si, constraints);
 
         no = new JButton("      No      ");
         no.setVisible(false);
         no.addActionListener(escucha);
-        constraints.gridx=0;
-        constraints.gridy=2;
-        constraints.insets = new Insets(150,115,0,0);
-        add(no,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.insets = new Insets(150, 115, 0, 0);
+        add(no, constraints);
         si.setVisible(false);
         no.setVisible(false);
 
-        areaPuntaje = new JTextArea(4,28);
+        areaPuntaje = new JTextArea(4, 28);
         areaPuntaje.setBorder(BorderFactory.createTitledBorder("Información"));
         areaPuntaje.setText("text");
-        constraints.gridx=0;
-        constraints.gridy=2;
-        constraints.gridwidth=1;
-        constraints.insets = new Insets(280,0,0,0);
-        constraints.anchor=GridBagConstraints.CENTER;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.insets = new Insets(280, 0, 0, 0);
+        constraints.anchor = GridBagConstraints.CENTER;
         add(areaPuntaje, constraints);
         areaPuntaje.setEditable(false);
         areaPuntaje.setVisible(false);
@@ -120,25 +115,23 @@ public class GUI extends JFrame {
         empezar = new JButton("Iniciar");
         empezar.setVisible(false);
         empezar.addActionListener(escucha);
-        constraints.gridx=0;
-        constraints.gridy=0;
-        constraints.gridwidth=1;
-        constraints.insets = new Insets(0,0,0,0);
-        add(empezar,constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.insets = new Insets(0, 0, 0, 0);
+        add(empezar, constraints);
 
         usuariohola = (nombredeUsuario.getText());
         palabras = new JLabel("Memoriza las siguientes palabras:");
         palabras.setFont(new Font("Regular", Font.PLAIN, 35));
         palabras.setVisible(false);
         //constraints.insets = new Insets(280,0,0,0);
-        add(palabras,constraints);
+        add(palabras, constraints);
 
-
-
-        timer1 = new Timer(300,escucha);
-        timer2 = new Timer(300,escucha);
-        timerAdivinar = new Timer(500,escucha);
-        timerRecordar = new Timer(100,escucha);
+        timer1 = new Timer(300, escucha);
+        timer2 = new Timer(300, escucha);
+        timerAdivinar = new Timer(2000, escucha);
+        timerRecordar = new Timer(100, escucha);
 
     }
 
@@ -147,7 +140,7 @@ public class GUI extends JFrame {
      * @param args Object used in order to send input data from command line when
      *             the program is execute by console.
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             GUI miProjectGUI = new GUI();
         });
@@ -156,7 +149,7 @@ public class GUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha implements ActionListener{
+    private class Escucha implements ActionListener {
         private ControlWord controlWord;
         private int counter;
         //private String usuarioString;
@@ -164,16 +157,17 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if(e.getSource()==instrucciones){
-                JOptionPane.showMessageDialog(null, "En cada nivel al comienzo se mostrarán una serie de palabras, tendrás que memorizarlas y decir");
+            if (e.getSource() == instrucciones) {
+                JOptionPane.showMessageDialog(null, "En cada nivel al comienzo se mostrará una serie de palabras," +"\n"+
+                        "tendrás que memorizarlas, luego se mostrarán mezcladas junto" +"\n"+
+                        "con otras palabras, tendrás que decidir cuales pertenecen al" +"\n"+
+                        "conjunto inicial");
 
-            }else if (e.getSource()==jugar){
+            } else if (e.getSource() == jugar) {
                 //Guarda los datos en un archivo de texto
 
-
-                fileManager.actualizarUsuario(nombredeUsuario.getText(),1);
+                fileManager.actualizarUsuario(nombredeUsuario.getText(), 1);
                 //nombredeUsuario.setText("");
-
 
                 empezar.setVisible(true);
                 instrucciones.setVisible(true);
@@ -181,9 +175,8 @@ public class GUI extends JFrame {
                 jugar.setVisible(false);
                 sesion.setVisible(false);
 
-
-
-            }if (e.getSource()==empezar){
+            }
+            if (e.getSource() == empezar) {
 
                 timer1.start();
                 controlWord = new ControlWord(nombredeUsuario.getText());
@@ -198,21 +191,21 @@ public class GUI extends JFrame {
                 System.out.println("------------------------------------------");
                 System.out.println("Incorrectas " + controlWord.getPalabrasIncorrectas());
                 System.out.println("------------------------------------------");
-                System.out.println("Combinada "+controlWord.mixPalabras());
 
 
-            }if(e.getSource()==timer1){
+            }
+            if (e.getSource() == timer1) {
                 timer1.stop();
                 timerRecordar.start();
-            }if (e.getSource()==timerRecordar){
-                if(counter<controlWord.getPalabrasCorrectas().size()){
+            }
+            if (e.getSource() == timerRecordar) {
+                if (counter < controlWord.getPalabrasCorrectas().size()) {
                     palabras.setText(controlWord.getPalabrasCorrectas().get(counter));
                     counter++;
-
-                }else{
+                } else {
                     timerRecordar.stop();
                     counter = 0;
-                    palabras.setText("yop");
+                    //palabras.setText(" ");
                     si.setVisible(true);
                     no.setVisible(true);
                     si.setEnabled(false);
@@ -220,18 +213,21 @@ public class GUI extends JFrame {
                     System.out.println("recordar termina");
                     timer2.start();
                 }
-
-            }if (e.getSource()==timer2){
+            }
+            if (e.getSource() == timer2) {
                 palabras.setText("Preparate");
                 timer2.stop();
                 timerAdivinar.start();
+                counter=0;
             }
-
-            if (e.getSource()==timerAdivinar){
+            if (e.getSource() == timerAdivinar) {
                 si.setEnabled(true);
                 no.setEnabled(true);
-                if(counter<controlWord.mixPalabras().size()){
-                    palabras.setText(controlWord.mixPalabras().get(counter));
+
+                if (counter < controlWord.getListaCombinada().size()) {
+                    System.out.println("Combinada " + controlWord.getListaCombinada());
+                    System.out.println("---------------------------------------------");
+                    palabras.setText(controlWord.getListaCombinada().get(counter));
                     counter++;
                 }
             }

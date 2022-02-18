@@ -71,9 +71,7 @@ public class FileManager {
                     isProcesado = true;
                     JOptionPane.showMessageDialog(null,"Bienvenido de vuelta "+ linea +"!" + "\n"+
                             "Vas en el nivel "+txt.split(",")[1]);
-
                 }
-
             }
             input.close();
             if(!isProcesado){
