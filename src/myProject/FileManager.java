@@ -12,12 +12,14 @@ public class FileManager {
     private BufferedReader input;
     private FileWriter fileWriter;
     private BufferedWriter output;
+    private GuiKnowThatWord GUI;
+
 
 
     public List<String> lecturaFile(String rutaArchivo, int nivel) {
 
         List<String> palabras = new ArrayList<>();
-        int cantidadPalabras = nivel * 10;
+        int cantidadPalabras = nivel * 2;
         String texto = "";
 
         try {
@@ -46,7 +48,7 @@ public class FileManager {
         return palabras;
     }
 
-    public void actualizarUsuario(String linea, int nivel){
+    public void agregarUsuario(String linea, int nivel){
         try {
             Path p = Paths.get("src/myProject/diccionario/user.txt");
             File init = new File(p.toUri());
@@ -71,6 +73,57 @@ public class FileManager {
                     isProcesado = true;
                     JOptionPane.showMessageDialog(null,"Bienvenido de vuelta "+ linea +"!" + "\n"+
                             "Vas en el nivel "+txt.split(",")[1]);
+                }
+            }
+            input.close();
+            if(!isProcesado){
+                output.write(linea + "," + nivel);
+                output.newLine();
+            }
+
+            output.close();
+            if(init.delete()){
+
+                System.out.println("se borra");
+            }
+            tmp.renameTo(init);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void actualizarUsuario(String linea, int nivel){
+        try {
+            Path p = Paths.get("src/myProject/diccionario/user.txt");
+            File init = new File(p.toUri());
+            File tmp = new File(init.getAbsolutePath() + ".tmp");
+
+            fileReader = new FileReader(init);
+            fileWriter = new FileWriter(tmp);
+            output = new BufferedWriter(fileWriter);
+            input  = new BufferedReader(fileReader);
+
+            String txt = null;
+
+            boolean isProcesado = false;
+            while((txt = input.readLine()) != null){
+                if(!txt.split(",")[0].equals(linea)){
+                    output.write(txt);
+                    output.newLine();
+                } else if(!isProcesado){
+                    output.write(linea + "," + nivel);
+                    output.newLine();
+
+                    isProcesado = true;
+                    JOptionPane.showMessageDialog(null,"Avanzaste al nivel "+
+                            nivel+"!");
                 }
             }
             input.close();

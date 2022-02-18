@@ -1,19 +1,14 @@
 package myProject;
 
-import java.lang.reflect.Array;
+import javax.swing.*;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class ControlWord {
 
     private String user;
-    private int nivel;
+    private int nivel,aciertos;
     private FileManager fileManager;
     private List<String> palabrasCorrectas, palabrasIncorrectas, listaCombinada;
-
-    public ControlWord () {
-
-    }
 
     public ControlWord (String user) {
         this.user = user;
@@ -23,30 +18,54 @@ public class ControlWord {
     }
 
     public void inicializar(){
+        aciertos=0;
         String infoUser = this.fileManager.retornaUsuario(this.user);
         String nivelUsuario = infoUser.split(",")[1];
         this.nivel = Integer.parseInt(nivelUsuario);
         this.palabrasCorrectas = fileManager.lecturaFile("src/myProject/diccionario/wordsOk.txt",nivel);
         this.palabrasIncorrectas = fileManager.lecturaFile("src/myProject/diccionario/wordsNok.txt",nivel);
+
         listaCombinada = new ArrayList<>();
         listaCombinada.addAll(palabrasCorrectas);
         listaCombinada.addAll(palabrasIncorrectas);
         Collections.shuffle(listaCombinada);
-
-
     }
 
-    /*
-    public List<String> mixPalabras(){
+    public void resultadoNivel(){
+        int tamañoLista = listaCombinada.size();
+        double multiplicador = 0;
 
-        List<String> listaCombinada = new ArrayList<>();
-        listaCombinada.addAll(palabrasCorrectas);
-        listaCombinada.addAll(palabrasIncorrectas);
-        Collections.shuffle(listaCombinada);
-        return  listaCombinada;
+        switch (nivel){
+            case 1,2:
+                multiplicador = 0.7;
+                break;
+            case 3:
+                multiplicador = 0.75;
+                break;
+            case 4,5:
+                multiplicador = 0.8;
+                break;
+            case 6:
+                multiplicador = 0.85;
+                break;
+            case 7,8:
+                multiplicador = 0.9;
+                break;
+            case 9:
+                multiplicador = 0.95;
+                break;
+            default:
+                multiplicador=1;
+        }
+        double promedio = tamañoLista*multiplicador;
+        if(aciertos>=promedio) {
+            fileManager.actualizarUsuario(user, nivel + 1);
+        }else{
+            JOptionPane.showMessageDialog(null,"perdiste");
+        }
     }
 
-     */
+
 
     public String getUser() {
         return user;
@@ -95,4 +114,13 @@ public class ControlWord {
     public void setListaCombinada(List<String> listaCombinada) {
         this.listaCombinada = listaCombinada;
     }
+
+    public int getAciertos() {
+        return aciertos;
+    }
+
+    public void setAciertos(int aciertos) {
+        this.aciertos = aciertos;
+    }
+
 }

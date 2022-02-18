@@ -1,18 +1,16 @@
 package myProject;
 
-import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.stream.Stream;
 
 /**
  * This class is used for ...
  * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
  * @version v.1.0.0 date:21/11/2021
  */
-public class GUI extends JFrame {
+public class GuiKnowThatWord extends JFrame {
     ;
     private JTextArea areaPuntaje;
     private JLabel sesion, palabras;
@@ -20,23 +18,25 @@ public class GUI extends JFrame {
     private JTextField nombredeUsuario;
     private Escucha escucha;
     private FileManager fileManager;
-    public static String usuariohola;
+
     private Timer timerRecordar, timerAdivinar, timer1, timer2, timer3;
+
 
     /**
      * Constructor of GUI class
      */
-    public GUI() {
+    public GuiKnowThatWord() {
         initGUI();
         //Default JFrame configuration
         this.setTitle("I KNOW THAT WORD");
-        this.setSize(720, 600);
+        this.setSize(720, 500);
         //this.pack();
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
 
     /**
      * This method is used to set up the default JComponent Configuration,
@@ -87,7 +87,7 @@ public class GUI extends JFrame {
         si.setVisible(false);
         constraints.gridx = 0;
         constraints.gridy = 2;
-        constraints.insets = new Insets(150, 0, 0, 135);
+        constraints.insets = new Insets(0, 0, 0, 135);
         add(si, constraints);
 
         no = new JButton("      No      ");
@@ -95,18 +95,17 @@ public class GUI extends JFrame {
         no.addActionListener(escucha);
         constraints.gridx = 0;
         constraints.gridy = 2;
-        constraints.insets = new Insets(150, 115, 0, 0);
+        constraints.insets = new Insets(0, 115, 0, 0);
         add(no, constraints);
         si.setVisible(false);
         no.setVisible(false);
 
-        areaPuntaje = new JTextArea(4, 28);
+        areaPuntaje = new JTextArea(3, 28);
         areaPuntaje.setBorder(BorderFactory.createTitledBorder("Información"));
-        areaPuntaje.setText("text");
         constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.gridwidth = 1;
-        constraints.insets = new Insets(280, 0, 0, 0);
+        constraints.insets = new Insets(160, 0, 0, 0);
         constraints.anchor = GridBagConstraints.CENTER;
         add(areaPuntaje, constraints);
         areaPuntaje.setEditable(false);
@@ -121,18 +120,20 @@ public class GUI extends JFrame {
         constraints.insets = new Insets(0, 0, 0, 0);
         add(empezar, constraints);
 
-        usuariohola = (nombredeUsuario.getText());
         palabras = new JLabel("Memoriza las siguientes palabras:");
         palabras.setFont(new Font("Regular", Font.PLAIN, 35));
         palabras.setVisible(false);
-        //constraints.insets = new Insets(280,0,0,0);
+        constraints.insets = new Insets(100,0,0,0);
         add(palabras, constraints);
 
         timer1 = new Timer(300, escucha);
         timer2 = new Timer(300, escucha);
-        timerAdivinar = new Timer(2000, escucha);
+        timerAdivinar = new Timer(4000, escucha);
         timerRecordar = new Timer(100, escucha);
 
+    }
+
+    public void reiniciarJuego(){
     }
 
     /**
@@ -142,7 +143,7 @@ public class GUI extends JFrame {
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            GUI miProjectGUI = new GUI();
+            GuiKnowThatWord miProjectGUI = new GuiKnowThatWord();
         });
     }
 
@@ -152,10 +153,10 @@ public class GUI extends JFrame {
     private class Escucha implements ActionListener {
         private ControlWord controlWord;
         private int counter;
-        //private String usuarioString;
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
 
             if (e.getSource() == instrucciones) {
                 JOptionPane.showMessageDialog(null, "En cada nivel al comienzo se mostrará una serie de palabras," +"\n"+
@@ -165,10 +166,7 @@ public class GUI extends JFrame {
 
             } else if (e.getSource() == jugar) {
                 //Guarda los datos en un archivo de texto
-
-                fileManager.actualizarUsuario(nombredeUsuario.getText(), 1);
-                //nombredeUsuario.setText("");
-
+                fileManager.agregarUsuario(nombredeUsuario.getText(), 1);
                 empezar.setVisible(true);
                 instrucciones.setVisible(true);
                 nombredeUsuario.setVisible(false);
@@ -187,11 +185,15 @@ public class GUI extends JFrame {
                 instrucciones.setVisible(false);
                 palabras.setVisible(true);
 
+
                 System.out.println("Correctas " + controlWord.getPalabrasCorrectas());
                 System.out.println("------------------------------------------");
                 System.out.println("Incorrectas " + controlWord.getPalabrasIncorrectas());
                 System.out.println("------------------------------------------");
-
+                System.out.println("Combinada " + controlWord.getListaCombinada());
+                System.out.println("---------------------------------------------");
+                areaPuntaje.setText("Nivel: " + controlWord.getNivel()+"\n"+
+                        "Aciertos: 0");
 
             }
             if (e.getSource() == timer1) {
@@ -205,12 +207,10 @@ public class GUI extends JFrame {
                 } else {
                     timerRecordar.stop();
                     counter = 0;
-                    //palabras.setText(" ");
                     si.setVisible(true);
                     no.setVisible(true);
                     si.setEnabled(false);
                     no.setEnabled(false);
-                    System.out.println("recordar termina");
                     timer2.start();
                 }
             }
@@ -220,15 +220,39 @@ public class GUI extends JFrame {
                 timerAdivinar.start();
                 counter=0;
             }
-            if (e.getSource() == timerAdivinar) {
+            if (e.getSource() == timerAdivinar){
                 si.setEnabled(true);
                 no.setEnabled(true);
 
                 if (counter < controlWord.getListaCombinada().size()) {
-                    System.out.println("Combinada " + controlWord.getListaCombinada());
-                    System.out.println("---------------------------------------------");
                     palabras.setText(controlWord.getListaCombinada().get(counter));
                     counter++;
+                }else{
+                    timerAdivinar.stop();
+                    controlWord.resultadoNivel();
+                }
+            }
+            if (e.getSource()==si){
+                si.setEnabled(false);
+                no.setEnabled(false);
+                String palabraMostrada = palabras.getText();
+                if(controlWord.getPalabrasCorrectas().contains(palabraMostrada)){
+                    controlWord.setAciertos(controlWord.getAciertos()+1);
+                    areaPuntaje.setText("Nivel: " + controlWord.getNivel()+"\n"+
+                            "Aciertos: "+ controlWord.getAciertos());
+                    System.out.println(controlWord.getAciertos());
+
+                }
+
+            }if (e.getSource()==no){
+                si.setEnabled(false);
+                no.setEnabled(false);
+                String palabraMostrada = palabras.getText();
+                if(controlWord.getPalabrasIncorrectas().contains(palabraMostrada)) {
+                    controlWord.setAciertos(controlWord.getAciertos() + 1);
+                    areaPuntaje.setText("Nivel: " + controlWord.getNivel()+"\n"+
+                            "Aciertos: "+ controlWord.getAciertos());
+                    System.out.println(controlWord.getAciertos());
                 }
             }
         }
