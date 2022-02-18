@@ -23,8 +23,9 @@ public class ControlWord {
         String nivelUsuario = infoUser.split(",")[1];
         this.nivel = Integer.parseInt(nivelUsuario);
         this.palabrasCorrectas = fileManager.lecturaFile("src/myProject/diccionario/wordsOk.txt",nivel);
+        Collections.shuffle(palabrasCorrectas);
         this.palabrasIncorrectas = fileManager.lecturaFile("src/myProject/diccionario/wordsNok.txt",nivel);
-
+        Collections.shuffle(palabrasIncorrectas);
         listaCombinada = new ArrayList<>();
         listaCombinada.addAll(palabrasCorrectas);
         listaCombinada.addAll(palabrasIncorrectas);
@@ -60,6 +61,7 @@ public class ControlWord {
         double promedio = tamañoLista*multiplicador;
         if(aciertos>=promedio) {
             fileManager.actualizarUsuario(user, nivel + 1);
+            aciertos=0;
         }else{
             JOptionPane.showMessageDialog(null,"perdiste");
         }

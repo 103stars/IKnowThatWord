@@ -6,15 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * This class is used for ...
- * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
+ * This class is used to create the main frame of the program
+ * @author Alejandro Lasso
  * @version v.1.0.0 date:21/11/2021
  */
 public class GuiKnowThatWord extends JFrame {
     ;
     private JTextArea areaPuntaje;
-    private JLabel sesion, palabras;
-    private JButton si, no, instrucciones, jugar, empezar;
+    private JLabel sesion, palabras, indicadorNivel;
+    private JButton si, no, instrucciones, empezar, iniciar;
     private JTextField nombredeUsuario;
     private Escucha escucha;
     private FileManager fileManager;
@@ -67,12 +67,12 @@ public class GuiKnowThatWord extends JFrame {
         constraints.insets = new Insets(80, 0, 40, 0);
         add(nombredeUsuario, constraints);
 
-        jugar = new JButton("Empezar");
-        jugar.addActionListener(escucha);
+        empezar = new JButton("Empezar");
+        empezar.addActionListener(escucha);
         constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.insets = new Insets(0, 0, 0, 0);
-        add(jugar, constraints);
+        add(empezar, constraints);
 
         instrucciones = new JButton("Como Jugar");
         instrucciones.setVisible(false);
@@ -111,14 +111,14 @@ public class GuiKnowThatWord extends JFrame {
         areaPuntaje.setEditable(false);
         areaPuntaje.setVisible(false);
 
-        empezar = new JButton("Iniciar");
-        empezar.setVisible(false);
-        empezar.addActionListener(escucha);
+        iniciar = new JButton("Iniciar");
+        iniciar.setVisible(false);
+        iniciar.addActionListener(escucha);
         constraints.gridx = 0;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
         constraints.gridwidth = 1;
         constraints.insets = new Insets(0, 0, 0, 0);
-        add(empezar, constraints);
+        add(iniciar, constraints);
 
         palabras = new JLabel("Memoriza las siguientes palabras:");
         palabras.setFont(new Font("Regular", Font.PLAIN, 35));
@@ -126,10 +126,20 @@ public class GuiKnowThatWord extends JFrame {
         constraints.insets = new Insets(100,0,0,0);
         add(palabras, constraints);
 
+        indicadorNivel = new JLabel("");
+        indicadorNivel.setFont(new Font("Regular", Font.PLAIN, 20));
+        indicadorNivel.setVisible(false);
+        constraints.gridx=0;
+        constraints.gridy=0;
+        constraints.insets = new Insets(0,0,120,0);
+        add(indicadorNivel,constraints);
+
+
         timer1 = new Timer(300, escucha);
         timer2 = new Timer(300, escucha);
+        timer3= new Timer(500,escucha);
         timerAdivinar = new Timer(4000, escucha);
-        timerRecordar = new Timer(100, escucha);
+        timerRecordar = new Timer(2000, escucha);
 
     }
 
@@ -162,23 +172,26 @@ public class GuiKnowThatWord extends JFrame {
                 JOptionPane.showMessageDialog(null, "En cada nivel al comienzo se mostrará una serie de palabras," +"\n"+
                         "tendrás que memorizarlas, luego se mostrarán mezcladas junto" +"\n"+
                         "con otras palabras, tendrás que decidir cuales pertenecen al" +"\n"+
-                        "conjunto inicial");
+                        "conjunto inicial. La cantidad de aciertos que necesitas corresponde"+"\n"+ " al 70% del total de las palabras mostradas.");
 
-            } else if (e.getSource() == jugar) {
+            } else if (e.getSource() == empezar) {
                 //Guarda los datos en un archivo de texto
                 fileManager.agregarUsuario(nombredeUsuario.getText(), 1);
-                empezar.setVisible(true);
+                iniciar.setVisible(true);
                 instrucciones.setVisible(true);
                 nombredeUsuario.setVisible(false);
-                jugar.setVisible(false);
+                empezar.setVisible(false);
                 sesion.setVisible(false);
 
             }
-            if (e.getSource() == empezar) {
+            if (e.getSource() == iniciar) {
 
+                palabras.setText("Memoriza las siguientes palabras:");
                 timer1.start();
+                timer3.stop();
+                indicadorNivel.setVisible(false);
                 controlWord = new ControlWord(nombredeUsuario.getText());
-                empezar.setVisible(false);
+                iniciar.setVisible(false);
                 si.setVisible(false);
                 no.setVisible(false);
                 areaPuntaje.setVisible(true);
@@ -198,6 +211,7 @@ public class GuiKnowThatWord extends JFrame {
             }
             if (e.getSource() == timer1) {
                 timer1.stop();
+                timer3.stop();
                 timerRecordar.start();
             }
             if (e.getSource() == timerRecordar) {
@@ -207,8 +221,6 @@ public class GuiKnowThatWord extends JFrame {
                 } else {
                     timerRecordar.stop();
                     counter = 0;
-                    si.setVisible(true);
-                    no.setVisible(true);
                     si.setEnabled(false);
                     no.setEnabled(false);
                     timer2.start();
@@ -216,6 +228,8 @@ public class GuiKnowThatWord extends JFrame {
             }
             if (e.getSource() == timer2) {
                 palabras.setText("Preparate");
+                si.setVisible(true);
+                no.setVisible(true);
                 timer2.stop();
                 timerAdivinar.start();
                 counter=0;
@@ -229,7 +243,12 @@ public class GuiKnowThatWord extends JFrame {
                     counter++;
                 }else{
                     timerAdivinar.stop();
+                    si.setEnabled(false);
+                    no.setEnabled(false);
                     controlWord.resultadoNivel();
+                    areaPuntaje.setText("Nivel: " + controlWord.getNivel()+"\n"+
+                            "Aciertos: "+ controlWord.getAciertos());
+                    timer3.start();
                 }
             }
             if (e.getSource()==si){
@@ -252,8 +271,19 @@ public class GuiKnowThatWord extends JFrame {
                     controlWord.setAciertos(controlWord.getAciertos() + 1);
                     areaPuntaje.setText("Nivel: " + controlWord.getNivel()+"\n"+
                             "Aciertos: "+ controlWord.getAciertos());
+
                     System.out.println(controlWord.getAciertos());
                 }
+            }if (e.getSource()==timer3){
+                counter=0;
+                palabras.setVisible(false);
+                si.setVisible(false);
+                no.setVisible(false);
+                areaPuntaje.setVisible(false);
+                indicadorNivel.setText("Click en iniciar para comenzar con el siguiente nivel ");
+                indicadorNivel.setVisible(true);
+                iniciar.setVisible(true);
+
             }
         }
     }

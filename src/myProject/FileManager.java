@@ -48,6 +48,8 @@ public class FileManager {
         return palabras;
     }
 
+
+
     public void agregarUsuario(String linea, int nivel){
         try {
             Path p = Paths.get("src/myProject/diccionario/user.txt");
