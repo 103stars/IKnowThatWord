@@ -15,7 +15,12 @@ public class FileManager {
     private GuiKnowThatWord GUI;
 
 
-
+    /**
+     * Picks elements for correct, incorrect and mixed lists
+     * @param rutaArchivo
+     * @param nivel
+     * @return
+     */
     public List<String> lecturaFile(String rutaArchivo, int nivel) {
 
         List<String> palabras = new ArrayList<>();
@@ -49,7 +54,11 @@ public class FileManager {
     }
 
 
-
+    /**
+     * Reads file user.txt to check if a player already exists, otherwise a new user will be created. Starting at level 1
+     * @param linea
+     * @param nivel
+     */
     public void agregarUsuario(String linea, int nivel){
         try {
             Path p = Paths.get("src/myProject/diccionario/user.txt");
@@ -101,6 +110,11 @@ public class FileManager {
         }
     }
 
+    /**
+     * Similar to the last method, this time it works as an updater if a player beats a level
+     * @param linea
+     * @param nivel
+     */
     public void actualizarUsuario(String linea, int nivel){
         try {
             Path p = Paths.get("src/myProject/diccionario/user.txt");
@@ -152,6 +166,11 @@ public class FileManager {
         }
     }
 
+    /**
+     * gets the username value, used to check for an existing player
+     * @param usuario
+     * @return username
+     */
     public String retornaUsuario(String usuario){
         String texto = null;
         try {

@@ -169,6 +169,7 @@ public class GuiKnowThatWord extends JFrame {
 
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
+     * adds, functionality to jcomponents
      */
     private class Escucha implements ActionListener {
         private ControlWord controlWord;

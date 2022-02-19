@@ -3,6 +3,12 @@ package myProject;
 import javax.swing.*;
 import java.util.*;
 
+/**
+ * This class is used to create the logic behind the game
+ * @author Alejandro Lasso
+ * @version v.1.0.0 date:21/11/2021
+ */
+
 public class ControlWord {
 
     private String user;
@@ -10,12 +16,20 @@ public class ControlWord {
     private FileManager fileManager;
     private List<String> palabrasCorrectas, palabrasIncorrectas, listaCombinada;
 
+    /**
+     * Gets the username written in the first JtextField
+     * @param user
+     */
     public ControlWord (String user) {
         this.user = user;
         this.fileManager = new FileManager();
         inicializar();
     }
 
+    /**
+     * Sets up everything for the game to start, such as checking if it is already registered player and the level,
+     * creates list of correct words, incorrect words and a mix of both
+     */
     public void inicializar(){
         aciertos=0;
         String infoUser = this.fileManager.retornaUsuario(this.user);
@@ -30,6 +44,10 @@ public class ControlWord {
         listaCombinada.addAll(palabrasIncorrectas);
         Collections.shuffle(listaCombinada);
     }
+
+    /**
+     * Winning conditions based on level percentage
+     */
 
     public void resultadoNivel(){
         int tamañoLista = listaCombinada.size();
@@ -80,6 +98,10 @@ public class ControlWord {
         }
     }
 
+    /**
+     * setters and getters
+     * @return
+     */
     public String getUser() {
         return user;
     }
