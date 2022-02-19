@@ -14,7 +14,6 @@ public class ControlWord {
         this.user = user;
         this.fileManager = new FileManager();
         inicializar();
-
     }
 
     public void inicializar(){
@@ -60,14 +59,26 @@ public class ControlWord {
         }
         double promedio = tamañoLista*multiplicador;
         if(aciertos>=promedio) {
-            fileManager.actualizarUsuario(user, nivel + 1);
+            if(nivel<10){
+                fileManager.actualizarUsuario(user, nivel + 1);
+            }else{
+                int i = JOptionPane.showConfirmDialog(null, "Has vencido el juego, ¿quieres volver a jugar?","Felicitaciones!", JOptionPane.YES_NO_OPTION);
+                if(i==JOptionPane.YES_OPTION){
+                    fileManager.actualizarUsuario(user, nivel = 1);
+                }else{
+                    System.exit(0);
+                }
+            }
             aciertos=0;
         }else{
-            JOptionPane.showMessageDialog(null,"perdiste");
+            int i = JOptionPane.showConfirmDialog(null, "Has perdido, ¿quieres volver a intentar?","Mala suerte", JOptionPane.YES_NO_OPTION);
+            if(i==JOptionPane.YES_OPTION){
+                fileManager.actualizarUsuario(user, nivel);
+            }else{
+                System.exit(0);
+            }
         }
     }
-
-
 
     public String getUser() {
         return user;

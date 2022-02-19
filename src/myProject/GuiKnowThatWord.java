@@ -17,7 +17,6 @@ public class GuiKnowThatWord extends JFrame {
     private JTextField nombredeUsuario;
     private Escucha escucha;
     private FileManager fileManager;
-
     private Timer timerRecordar, timerAdivinar, timer1, timer2, timer3;
 
 
@@ -28,12 +27,13 @@ public class GuiKnowThatWord extends JFrame {
         initGUI();
         //Default JFrame configuration
         this.setTitle("I KNOW THAT WORD");
-        this.setSize(720, 500);
+        this.setSize(600, 500);
         //this.pack();
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
 
@@ -59,8 +59,9 @@ public class GuiKnowThatWord extends JFrame {
         constraints.insets = new Insets(0, 0, 100, 0);
         add(sesion, constraints);
 
+
         nombredeUsuario = new JTextField();
-        nombredeUsuario.setPreferredSize(new Dimension(220, 30));
+        nombredeUsuario.setPreferredSize(new Dimension(200, 30));
 
         nombredeUsuario.addKeyListener(new KeyAdapter() {
             @Override
@@ -136,7 +137,7 @@ public class GuiKnowThatWord extends JFrame {
         add(palabras, constraints);
 
         indicadorNivel = new JLabel("");
-        indicadorNivel.setFont(new Font("Regular", Font.PLAIN, 20));
+        indicadorNivel.setFont(new Font("Regular", Font.PLAIN, 30));
         indicadorNivel.setVisible(false);
         constraints.gridx=0;
         constraints.gridy=0;
@@ -146,9 +147,9 @@ public class GuiKnowThatWord extends JFrame {
 
         timer1 = new Timer(300, escucha);
         timer2 = new Timer(300, escucha);
-        timer3= new Timer(500,escucha);
-        timerAdivinar = new Timer(4000, escucha);
-        timerRecordar = new Timer(2000, escucha);
+        timer3= new Timer(0,escucha);
+        timerAdivinar = new Timer(100, escucha);
+        timerRecordar = new Timer(100, escucha);
 
     }
 
@@ -261,14 +262,13 @@ public class GuiKnowThatWord extends JFrame {
                 si.setEnabled(false);
                 no.setEnabled(false);
                 String palabraMostrada = palabras.getText();
+
                 if(controlWord.getPalabrasCorrectas().contains(palabraMostrada)){
                     controlWord.setAciertos(controlWord.getAciertos()+1);
                     areaPuntaje.setText("Nivel: " + controlWord.getNivel()+"\n"+
                             "Aciertos: "+ controlWord.getAciertos());
                     System.out.println(controlWord.getAciertos());
-
                 }
-
             }if (e.getSource()==no){
                 si.setEnabled(false);
                 no.setEnabled(false);
@@ -282,6 +282,7 @@ public class GuiKnowThatWord extends JFrame {
                 }
             }if (e.getSource()==timer3){
                 counter=0;
+                indicadorNivel.setText("Click en iniciar para intentar el nivel");
                 palabras.setVisible(false);
                 si.setVisible(false);
                 no.setVisible(false);

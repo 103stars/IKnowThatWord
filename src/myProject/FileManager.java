@@ -19,7 +19,7 @@ public class FileManager {
     public List<String> lecturaFile(String rutaArchivo, int nivel) {
 
         List<String> palabras = new ArrayList<>();
-        int cantidadPalabras = nivel * 2;
+        int cantidadPalabras = nivel * 1;
         String texto = "";
 
         try {
@@ -124,8 +124,8 @@ public class FileManager {
                     output.newLine();
 
                     isProcesado = true;
-                    JOptionPane.showMessageDialog(null,"Avanzaste al nivel "+
-                            nivel+"!");
+                    JOptionPane.showMessageDialog(null,"El nivel actual es el "+
+                            nivel);
                 }
             }
             input.close();
