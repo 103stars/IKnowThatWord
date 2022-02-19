@@ -19,7 +19,7 @@ public class FileManager {
     public List<String> lecturaFile(String rutaArchivo, int nivel) {
 
         List<String> palabras = new ArrayList<>();
-        int cantidadPalabras = nivel * 1;
+        int cantidadPalabras = nivel * 10;
         String texto = "";
 
         try {

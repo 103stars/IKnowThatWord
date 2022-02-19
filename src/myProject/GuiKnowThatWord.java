@@ -10,7 +10,6 @@ import java.awt.event.*;
  * @version v.1.0.0 date:21/11/2021
  */
 public class GuiKnowThatWord extends JFrame {
-    ;
     private JTextArea areaPuntaje;
     private JLabel sesion, palabras, indicadorNivel;
     private JButton si, no, instrucciones, empezar, iniciar;
@@ -18,7 +17,6 @@ public class GuiKnowThatWord extends JFrame {
     private Escucha escucha;
     private FileManager fileManager;
     private Timer timerRecordar, timerAdivinar, timer1, timer2, timer3;
-
 
     /**
      * Constructor of GUI class
@@ -33,7 +31,7 @@ public class GuiKnowThatWord extends JFrame {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        this.getContentPane().setBackground(new Color(71,120,177));
     }
 
 
@@ -52,13 +50,13 @@ public class GuiKnowThatWord extends JFrame {
 
         sesion = new JLabel("Ingresa tu nombre");
         sesion.setFont(new Font("Regular", Font.PLAIN, 25));
+        sesion.setForeground(new Color(255, 255, 255));
 
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.PAGE_START;
         constraints.insets = new Insets(0, 0, 100, 0);
         add(sesion, constraints);
-
 
         nombredeUsuario = new JTextField();
         nombredeUsuario.setPreferredSize(new Dimension(200, 30));
@@ -110,6 +108,9 @@ public class GuiKnowThatWord extends JFrame {
         si.setVisible(false);
         no.setVisible(false);
 
+
+        Image img = Toolkit.getDefaultToolkit().getImage("src/myProject/resources/bg.png");
+
         areaPuntaje = new JTextArea(3, 28);
         areaPuntaje.setBorder(BorderFactory.createTitledBorder("Información"));
         constraints.gridx = 0;
@@ -133,12 +134,14 @@ public class GuiKnowThatWord extends JFrame {
         palabras = new JLabel("Memoriza las siguientes palabras:");
         palabras.setFont(new Font("Regular", Font.PLAIN, 35));
         palabras.setVisible(false);
+        palabras.setForeground(new Color(255, 255, 255));
         constraints.insets = new Insets(100,0,0,0);
         add(palabras, constraints);
 
         indicadorNivel = new JLabel("");
         indicadorNivel.setFont(new Font("Regular", Font.PLAIN, 30));
         indicadorNivel.setVisible(false);
+        indicadorNivel.setForeground(new Color(255, 255, 255));
         constraints.gridx=0;
         constraints.gridy=0;
         constraints.insets = new Insets(0,0,120,0);
@@ -148,8 +151,8 @@ public class GuiKnowThatWord extends JFrame {
         timer1 = new Timer(300, escucha);
         timer2 = new Timer(300, escucha);
         timer3= new Timer(0,escucha);
-        timerAdivinar = new Timer(100, escucha);
-        timerRecordar = new Timer(100, escucha);
+        timerAdivinar = new Timer(7000, escucha);
+        timerRecordar = new Timer(5000, escucha);
 
     }
 
