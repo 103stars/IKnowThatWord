@@ -2,8 +2,7 @@ package myProject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 /**
  * This class is used to create the main frame of the program
@@ -62,6 +61,16 @@ public class GuiKnowThatWord extends JFrame {
 
         nombredeUsuario = new JTextField();
         nombredeUsuario.setPreferredSize(new Dimension(220, 30));
+
+        nombredeUsuario.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                if (e.getKeyChar()==','){
+                    e.consume();
+                }
+            }
+        });
         constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.insets = new Insets(80, 0, 40, 0);
@@ -141,9 +150,6 @@ public class GuiKnowThatWord extends JFrame {
         timerAdivinar = new Timer(4000, escucha);
         timerRecordar = new Timer(2000, escucha);
 
-    }
-
-    public void reiniciarJuego(){
     }
 
     /**
@@ -280,7 +286,6 @@ public class GuiKnowThatWord extends JFrame {
                 si.setVisible(false);
                 no.setVisible(false);
                 areaPuntaje.setVisible(false);
-                indicadorNivel.setText("Click en iniciar para comenzar con el siguiente nivel ");
                 indicadorNivel.setVisible(true);
                 iniciar.setVisible(true);
 
